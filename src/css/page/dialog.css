@@ -1,0 +1,142 @@
+
+
+
+.modal{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 99;
+    background-color: rgba(0, 0, 0, .4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.modal-content{
+    width: 900px;
+    height: 602px;
+    background-color: #ffffff;
+    position: relative;
+
+}
+
+.modal-header{
+    display: flex;
+    justify-content: space-between;
+
+}
+.modal-title{
+    padding: 20px 12px 20px 32px;
+    display: flex;
+    align-items: center;
+
+}
+.modal-title .title{
+    font-size: 24px;
+    font-family: notosans-bold;
+
+}
+.modal-title .checkbox-wrapper{
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.modal-title label{
+    padding-left: 10px;
+}
+.modal-utilities{
+    display: flex;
+    padding: 12px;
+
+}
+.modal-utilities .btn-help{
+    background: url('../../assets/img/Sprites.64af8f61.svg') no-repeat -88px -144px;
+	width: 24px;
+	height: 24px;
+    margin-right: 6px;
+}
+.modal-utilities .btn-close{
+    background: url('../../assets/img/Sprites.64af8f61.svg') no-repeat -144px -144px;
+	width: 24px;
+	height: 24px;
+}
+.modal-body{
+    padding-left: 32px;
+    padding-right: 32px;
+    padding-bottom: 32px;
+}
+.modal-body .red{
+    color: red;
+}
+.modal-body .base-info{
+    display: flex;
+    align-items: center;
+    padding-bottom: 24px;
+    
+}
+.modal-body .base-info-row{
+    padding-bottom: 12px;
+}
+.modal-body .base-info-row .label{
+    font-size: 12px;
+    font-family: notosans-bold;
+    padding-bottom: 4px;
+}
+.modal-body .flex-row{
+    display: flex;
+   
+    
+}
+
+
+.modal-body .left-base{
+    padding-right: 26px;
+
+}
+
+
+.modal-body .right-base .radio-wrapper{
+    display: flex;
+    align-items: center;
+    height: 32px;
+}
+ 
+.modal-footer{
+    
+    padding-left: 32px;
+    padding-right: 32px;
+    
+}
+.footer-content{
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 36px;
+    padding: 20px 0 32px 0;
+    box-sizing: content-box;
+}
+.modal-footer .right-footer{
+    display: flex;
+    align-items: center;
+
+}
+.modal-footer .btn-save{
+    margin-left: .75rem;
+    margin-right: .75rem;
+}
+.modal-footer .btn-last{
+    outline: none;
+    border: none;
+    width: 0;
+    height: 0;
+    padding: 0;
+}
+
+
+

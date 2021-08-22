@@ -1,0 +1,11 @@
+.warning-icon{
+    
+	background: url('../../../assets/img/Sprites.64af8f61.svg') no-repeat -593px -458px;
+	
+}
+.confirm-footer{
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

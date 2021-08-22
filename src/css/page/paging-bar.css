@@ -1,0 +1,50 @@
+.paging-bar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 46px;
+    
+}
+.right-paging-bar{
+    display: flex;
+    align-items: center;
+}
+.pageSize-wrapper{
+    width: 200px;
+    
+}
+.pageSize{
+    margin-right: 16px;
+}
+.paging{
+    display: flex;
+    align-items: center;
+    margin-right: 25px;
+    margin-left: 25px;
+}
+.preview{
+    margin-right: 13px;
+    
+}
+.next{
+    margin-left: 13px;
+    
+}
+.unactive-move{
+    color : #9e9e9e;
+}
+.pageIndex{
+    display: flex;
+    align-items: center;
+}
+.index{
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+.active-index{
+    border: 1px solid #e0e0e0;
+    font-family: notosans-bold;
+}

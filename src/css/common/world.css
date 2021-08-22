@@ -1,0 +1,28 @@
+.world{
+    display: flex;
+    width: 100%;
+    height: 100vh;
+
+}
+
+::-webkit-scrollbar
+{
+width: 7px;
+height: 7px;
+
+
+}
+::-webkit-scrollbar-track
+{
+  border-radius: 10px;
+    background-color: #e9ebee;
+    
+}
+::-webkit-scrollbar-thumb
+{border-radius: 10px;
+    background-color:#b8bcc3;
+    
+
+
+    
+}

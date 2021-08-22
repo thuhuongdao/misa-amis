@@ -1,0 +1,22 @@
+.mx-datepicker{
+    width: 100%;
+}
+.mx-input{
+    height: 32px;
+    border-radius: 2px;
+}
+.mx-input::placeholder{
+    font-size: 12px;
+    font-family: notosans-italic;
+}
+.mx-input:hover{
+    border-color: #dadadc;
+    
+}
+.mx-input:focus{
+    border-color: #2ca01c;
+    
+}
+.mx-datepicker-footer{
+    text-align: center;
+}

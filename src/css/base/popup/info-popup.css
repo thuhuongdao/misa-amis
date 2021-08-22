@@ -1,0 +1,18 @@
+.info-icon{
+    
+	background: url('../../../assets/img/Sprites.64af8f61.svg') no-repeat -826px -456px;
+	
+}
+.info-footer{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.right-info-footer{
+    display: flex;
+    align-items: center;
+
+}
+.btn-accept{
+    margin-left:8px ;
+}

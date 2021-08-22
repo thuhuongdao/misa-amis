@@ -1,0 +1,19 @@
+.filter{
+    padding: 16px 16px 20px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+}
+.btn-refresh{
+    background: url('../../assets/img/Sprites.64af8f61.svg') no-repeat -424px -201px;
+	width: 24px;
+	height: 24px;
+    margin-left: 16px;
+
+}
+.btn-refresh:hover{
+    background: url('../../assets/img/Sprites.64af8f61.svg') no-repeat -1096px -89px;
+	width: 24px;
+	height: 24px;
+}

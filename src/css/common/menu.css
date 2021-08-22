@@ -1,0 +1,28 @@
+.menu{
+    width: 178px;
+    background-color: #393a3d;
+    overflow: auto;
+}
+.logo-container{
+
+    background-color: #38393d;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.option{
+    background: url('../../assets/img/Sprites.64af8f61.svg') no-repeat -428px -92px;
+	width: 16px;
+	height: 16px;
+    margin-right: 10px;
+}
+.logo img{
+    height: 32px;
+}
+.menu-item-list{
+    padding-top: 14px;
+    height: calc(100vh - 48px);
+  
+
+}

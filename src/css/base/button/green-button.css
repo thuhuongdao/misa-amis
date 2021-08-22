@@ -1,0 +1,19 @@
+.green-button{
+    
+    background-color: #2ca01c;
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 36px;
+    color:  #ffffff;
+    border-radius: 4px;
+
+}
+.green-button:hover{
+    background-color: #35bf22;
+}
+.green-button:focus{
+    background-color: #35bf22;
+}
+.green-button:active{
+    background-color: #2ca01c;
+}

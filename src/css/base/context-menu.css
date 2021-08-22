@@ -1,0 +1,23 @@
+
+    .context-menu{
+      width: 104px;
+      background-color: #ffffff;
+      border: 1px solid #babec5;
+      z-index: 3;
+      position: fixed;
+      
+      
+    }
+    .context-menu-item{
+      
+      padding: 5px 10px;
+      margin: 0;
+      
+      
+    }
+    .context-menu-item:hover{
+      background-color: #e8e9ec;
+      color: #25c438
+      ;
+    
+    }

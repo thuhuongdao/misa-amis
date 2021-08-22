@@ -1,0 +1,17 @@
+.tooltip{
+    z-index: 1000;
+    font-size: 12px;
+
+}
+.tooltip .tooltip-inner {
+    background: #505050;
+    color: #ffffff;
+    border-radius: 2px;
+    padding: 3px 10px;
+  }
+  
+  .tooltip[x-placement^="bottom"] {
+    margin-top: 5px;
+    margin-left: 56px;
+
+  }

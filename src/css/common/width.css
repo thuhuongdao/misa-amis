@@ -1,0 +1,55 @@
+/* use to table column width */
+.mw-143{
+    min-width: 143px;
+  }
+  .mw-250{
+    min-width: 250px;
+  }
+  
+  .mw-105{
+    min-width: 105px;
+  }
+  
+  .mw-150{
+    min-width: 150px;
+  }
+  
+  .mw-200{
+    min-width: 200px;
+  }
+  .mw-40{
+    min-width: 40px;
+
+  }
+  .mw-120{
+    min-width: 120px;
+  }
+  .fw-40{
+    width: 40px;
+  }
+  .fw-120{
+    width: 120px;
+  }
+/* use in dialog */
+.w-50{
+    width: 50%;
+    box-sizing: content-box;
+}
+.w-40{
+    width: 40%;
+    box-sizing: content-box;
+}
+.w-60{
+    width: 60%;
+    box-sizing: content-box;
+}
+.w-25{
+    width: 25%;
+    box-sizing: content-box;
+}
+.r-6{
+    padding-right: 6px;
+}
+.r-16{
+    padding-right: 16px;
+}

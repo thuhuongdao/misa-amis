@@ -1,0 +1,24 @@
+
+.input{
+    height: 32px;
+    border: 1px solid #babec5  ;
+    outline: none;
+    font-size: 13px;
+    font-family: notosans-regular;
+    color: #111;
+    width: 100%;
+    border-radius: 2px;
+    padding: 6px 10px;
+    
+}
+.input:hover{
+    border-color: #dadadc;
+}
+.active-input{
+    border-color: #2ca01c;
+}
+.error-input{
+    border-color: red !important;
+
+}
+
