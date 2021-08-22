@@ -123,6 +123,12 @@
     <employee-dialog v-if="isShowDialog" :mode="dialogMode" :id="id" @close-dialog="isShowDialog = false" @success="reload($event)" @change-mode="dialogMode = $event"/>
     <base-context-menu v-show="isShowContext" :top="top" :left ="left"  @delete="isShowConfirm = true" @copy="copy"/>
     <base-confirm-popup v-show="isShowConfirm" :text="contextMenuCode" @yes="del" @no="isShowConfirm = false"/>
+    <base-warning-popup
+
+      v-show="isShowWarning"
+      :text="warningText"
+      @ok="isShowWarning = false"
+    />
   </div>
 
 </template>
@@ -171,10 +177,14 @@ export default {
       isCheckAll : false,
       //số lượng checkbox đã checked
       cntCheck: 0,
-      //hiển thị popup xác nhận chắc chắn muốn xóa dữ liệu
+      //trạng thái popup xác nhận chắc chắn muốn xóa dữ liệu
       isShowConfirm: false,
+      //trạng thái popup cảnh báo
+      isShowWarning: false,
+      //dữ liệu truyền vào popup cảnh báo
+      warningText:null,
 
-      //hiển thị menu-context
+      //trạng thái menu-context
       isShowContext : false,
       //id nhân viên context menu hiện tại trỏ đến
       contextMenuId: null,
@@ -276,10 +286,13 @@ computed:{
           
 
         })
-        .catch(() => {
+        .catch((error) => {
          
           //đã load xong dữ liệu
           this.isLoading= false;
+          //mã response trả về 500
+          if(error.status == 500)
+            this.openWarning(error.data.userMsg);
           
         });
 
@@ -371,7 +384,9 @@ computed:{
           this.loadData();
 
         })
-        .catch(() => {
+        .catch((error) => {
+          if(error.status == 500)
+            this.openWarning(error.data.userMsg);
          
         });
   },
@@ -469,6 +484,11 @@ computed:{
             }
     },
   
+
+  },
+  openWarning: function(value){
+    this.warningText = value;
+    this.isShowWarning = true;
 
   }
   
