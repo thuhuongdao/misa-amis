@@ -1,5 +1,5 @@
 <template>
-  <div class="combobox" :title="isError ? field : ''">
+  <div class="combobox" v-tooltip="isError ? field : ''">
     <div
       class="combobox-header"
       :class="{ 'combobox-active': isActive, 'combobox-error': isError }"
@@ -37,10 +37,11 @@
 @import "../../css/base/combobox.css";
 </style>
 <script>
-import Vue from "vue";
-import axios from "axios";
-import VueAxios from "vue-axios";
-Vue.use(VueAxios, axios);
+import Vue from 'vue'
+import DepartmentAPI from '../../js/api/specific/DepartmentAPI'
+import VTooltip from 'v-tooltip'
+Vue.use(VTooltip);
+
 export default {
   props: ['type','value','text','field'],
   data() {
@@ -82,6 +83,7 @@ export default {
   },
   created: function() {
    
+   //load dữ liệu của combobox
     if (this.type == "record") {
       this.goodsList = [
         {
@@ -106,8 +108,7 @@ export default {
         },
       ];
     }else if(this.type == 'department'){
-      axios
-      .get("https://localhost:44389/api/v1/departments")
+      DepartmentAPI.getAll()
       .then((res) => {
         for(let element of res.data){
 
@@ -126,12 +127,16 @@ export default {
    
   },
   methods: {
+    /**
+     * focus vào input
+     * CreatedBy : DTHUONG(20/8/2021)
+     */
     autoFocus: function(){
       this.$refs.search.focus();
     },
     /**
      * xổ combobox xuống
-     *
+     *CreatedBy : DTHUONG(20/8/2021)
      */
     openCombobox: function() {
       this.isDown = false;
@@ -139,6 +144,7 @@ export default {
     },
     /**
      * đóng combobox lại
+     * CreatedBy : DTHUONG(20/8/2021)
      */
     closeCombobox: function() {
       this.isDown = true;
@@ -146,6 +152,7 @@ export default {
     },
     /**
      * blur ra ngoài combobox
+     * CreatedBy : DTHUONG(20/8/2021)
      *
      */
     blurInput: function() {
@@ -160,16 +167,12 @@ export default {
     },
     /**
      * focus vao input
+     * CreatedBy : DTHUONG(20/8/2021)
      */
     focusInput: function() {
    
       this.isActive = true;
       this.openCombobox();
-      // lọc các option theo dữ liệu nhập vào
-      // let val = this.searchContent.toLowerCase();
-      // this.filtered = this.goodsList.filter(({ name }) => {
-      //   return name.toLowerCase().includes(val);
-      // });
       this.filtered = this.goodsList;
       // tự động hover vào option đầu tiên
       this.hover.index = 0;
@@ -177,6 +180,7 @@ export default {
     },
     /**
      * tự động lọc khi nhập dữ liệu
+     * CreatedBy : DTHUONG(20/8/2021)
      */
     autoSearch: function(event) {
       let keyCode = event.keyCode;
@@ -205,8 +209,7 @@ export default {
         this.searchContent = this.filtered[this.hover.index].name;
         this.active = this.hover.id;
         this.closeCombobox();
-        //this.$emit("blur", this.isError);
-       // this.$emit("select", this.active);
+        
       } else {//nhập kí tự vào input
         /**
          * lọc theo dữ liệu nhập vào
@@ -239,6 +242,7 @@ export default {
     },
     /**
      * hover vao cac item
+     * CreatedBy : DTHUONG(20/8/2021)
      */
     mouseOver: function(index) {
       this.hover.index = index;
@@ -246,12 +250,13 @@ export default {
     },
     /**
      * click chọn item
+     * CreatedBy : DTHUONG(20/8/2021)
      */
     select: function(index, event) {
       //nhập option được chọn vào input
       this.active= this.filtered[index].id;
       this.searchContent = this.filtered[index].name;
-      // this.$emit("select", this.active);
+     
       //không còn lỗi nữa
       this.isError = false;
       this.closeCombobox()
@@ -259,6 +264,7 @@ export default {
     },
     /**
      * click vào mũi tên
+     * CreatedBy : DTHUONG(20/8/2021)
      */
     clickArrow: function(event) {
       

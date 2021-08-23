@@ -22,10 +22,18 @@ export default {
         }
     },
     methods:{
+        /**
+         * chọn xóa
+         * CreatedBy : DTHUONG (22/8/2021)
+         */
         
         deleteRow: function(){
             this.$emit('delete');
         },
+        /**
+         * chọn nhân bản
+         * CreatedBy : DTHUONG (22/8/2021)
+         */
         copyRow: function(){
             this.$emit('copy');
         }

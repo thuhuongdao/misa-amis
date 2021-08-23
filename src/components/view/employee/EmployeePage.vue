@@ -34,7 +34,7 @@
                   SỐ TÀI KHOẢN
                 </th>
                 <th class=" text-align-left mw-250 bankName">TÊN NGÂN HÀNG</th>
-                <th class=" text-align-left mw-250 bankBrachName">
+                <th class="before-last text-align-left mw-250 bankBrachName">
                   CHI NHÁNH TÀI KHOẢN NGÂN HÀNG
                 </th>
                
@@ -56,7 +56,7 @@
                
                 <td class="mw-150 bankAccountNumber">{{item.bankAccountNumber}}</td>
                 <td class="mw-250 bankName">{{item.bankName}}</td>
-                <td class="mw-250 bankBrachName">{{item.bankBranchName}}</td>
+                <td class="mw-250 before-last bankBrachName">{{item.bankBranchName}}</td>
               
                
                 <td class="mw-120 feature" >
@@ -134,33 +134,32 @@
 </template>
 <style scoped>
 
-@import "../../css/base/button/button.css";
-@import '../../css/common/z-index.css';
-@import "../../css/common/width.css";
-@import "../../css/common/content.css";
-@import "../../css/page/header-content.css";
-@import "../../css/page/filter.css";
-@import "../../css/page/table.css";
-@import "../../css/page/paging-bar.css";
+@import "../../../css/base/button/button.css";
+@import '../../../css/common/z-index.css';
+@import "../../../css/common/width.css";
+@import "../../../css/common/content.css";
+@import "../../../css/page/header-content.css";
+@import "../../../css/page/filter.css";
+@import "../../../css/page/table.css";
+@import "../../../css/page/paging-bar.css";
 </style>
 <script>
 import Vue from "vue";
-import axios from "axios";
-import VueAxios from "vue-axios";
-Vue.use(VueAxios, axios);
+import EmployeeAPI from '../../../js/api/specific/EmployeeAPI'
 import VTooltip from 'v-tooltip'
 Vue.use(VTooltip);
 
-import dialogMode from "../../js/common/const";
-import format from "../../js/common/format";
-import BaseLoading from "../base/BaseLoading.vue";
-import BaseAutoComboBox from "../base/BaseAutoComboBox.vue";
-import BaseGreenButton from "../base/BaseGreenButton.vue";
-import BaseSearchInput from "../base/BaseSearchInput.vue";
+import dialogMode from "../../../js/common/const";
+import format from "../../../js/common/format";
+
+import BaseLoading from "../../base/BaseLoading.vue";
+import BaseAutoComboBox from "../../base/BaseAutoComboBox.vue";
+import BaseGreenButton from "../../base/button/BaseGreenButton.vue";
+import BaseSearchInput from "../../base/input/BaseSearchInput.vue";
 import EmployeeDialog from './EmployeeDialog.vue';
-import BaseContextMenu from '../base/BaseContextMenu.vue';
-import BaseConfirmPopup from '../base/BaseConfirmPopup.vue';
-import BaseCheckbox from '../base/BaseCheckbox.vue';
+import BaseContextMenu from '../../base/BaseContextMenu.vue';
+import BaseConfirmPopup from '../../base/popup/BaseConfirmPopup.vue';
+import BaseCheckbox from '../../base/BaseCheckbox.vue';
 
 export default {
   components: { BaseGreenButton, BaseSearchInput, BaseAutoComboBox, EmployeeDialog,
@@ -273,8 +272,7 @@ computed:{
       //hiển thị đang loading dữ liệu 
       this.isLoading= true;
       //load dữ liệu
-      axios
-        .get("https://localhost:44389/api/v1/employees/filter", {params : this.filter})
+      EmployeeAPI.filter(this.filter)
         .then((response) => {
           //lấy data trả về 
           var result  = response.data ;
@@ -378,8 +376,7 @@ computed:{
     this.isShowConfirm = false;
     //thực hiện xóa nhân viên
 
-    axios
-        .delete("https://localhost:44389/api/v1/employees/" + this.contextMenuId)
+    EmployeeAPI.delete(this.contextMenuId)
         .then(() => {
           this.loadData();
 
@@ -456,7 +453,7 @@ computed:{
     if(this.isShowContext == false){
       this.contextMenuId = id;
       this.contextMenuCode = code;
-      console.log(this.$refs[id]);
+    
       
       this.left = this.$refs[id][0].getBoundingClientRect().left - 70;
       this.top = this.$refs[id][0].getBoundingClientRect().top + 26;
@@ -486,6 +483,10 @@ computed:{
   
 
   },
+  /**
+   * mở popup cảnh báo
+   * CreatedBy : DTHUONG (22/8/2021)
+   */
   openWarning: function(value){
     this.warningText = value;
     this.isShowWarning = true;

@@ -27,6 +27,7 @@
     cursor: pointer;
     margin-right: 16px;
     width: 48px;
+    min-width: 48px;
 	height: 48px;
 }
 

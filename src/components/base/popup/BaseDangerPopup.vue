@@ -16,20 +16,17 @@
   </div>
 </template>
 <style scoped>
-@import "../../css/base/popup/popup.css";
-@import "../../css/base/popup/danger-popup.css";
+@import "../../../css/base/popup/popup.css";
+@import "../../../css/base/popup/danger-popup.css";
 </style>
 <script>
-import BaseGreenButton from "./BaseGreenButton.vue";
+import BaseGreenButton from "../button/BaseGreenButton.vue";
 export default {
   components: { BaseGreenButton },
   props: {
     text: String,
   },
-  methods: {
-    autoFocus: function() {
-      this.$refs['btn-danger'].autoFocus();
-    },
-  },
+ 
+  
 };
 </script>

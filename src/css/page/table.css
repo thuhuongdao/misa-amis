@@ -28,7 +28,7 @@ display: block;
   
 }
 
-.table td, .table th {
+.table th {
   
   border-right: 1px solid #c7c7c7;
   border-bottom: 1px solid #c7c7c7;
@@ -54,6 +54,9 @@ display: block;
   right: 0;
   border-left: 1px solid #c7c7c7;
 }
+.table tr td:last-child{
+  border-left-style:  dotted;
+}
 .table .before-last{
   border-right: none;
 }
@@ -72,6 +75,8 @@ display: block;
 .table td{
   height: 47px;
   padding: 5px 10px;
+  border-right: 1px dotted #c7c7c7;
+  border-bottom: 1px solid #c7c7c7;
 
 }
 .table th, .table td{

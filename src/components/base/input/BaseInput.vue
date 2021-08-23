@@ -12,7 +12,7 @@
   />
 </template>
 <style scoped>
-@import "../../css/base/input/input.css";
+@import "../../../css/base/input/input.css";
 </style>
 <script>
 import Vue from "vue";
@@ -20,6 +20,7 @@ import VTooltip from 'v-tooltip'
 Vue.use(VTooltip);
 export default {
   props: {
+    
     status: Boolean,
     inputType: String,
     value: String,
@@ -39,29 +40,21 @@ export default {
       },
       set(val) {
         this.$emit("input", val);
+        //khi nhập dữ liệu vào check luôn xem có hợp lệ không
         if (this.status == true) {
           if (val == "") {
             this.error = true;
-            
-
-
           }else{
             this.error = false;
-         
           }
         }else{
           if (val == "") {
             this.error = false;
-      
-
           }else{
             if (this.inputType == "email") {
               let reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
               if (!reg.test(val.toLowerCase())) {
                 this.error = true;
-               
-
-          
               }else{
                 this.error = false;
                 this.errorMsg = "";
@@ -93,14 +86,26 @@ export default {
     }
   },
   methods: {
+    /**
+     * focus vào input
+     * CreatedBy : DTHUONG(20/8/2021)
+     */
     autoFocus: function() {
       this.$refs.input.focus();
     },
+    /**
+     * hành động khi focus input
+     * CreatedBy : DTHUONG(20/8/2021)
+     */
     focusInput: function() {
       console.log("focus");
       // this.error = false;
       this.active = true;
     },
+    /**
+     * Xử lý sự kiện không cho nhập chữ vào các trường yêu cầu nhập số
+     * CreatedBy : DTHUONG(20/8/2021)
+     */
     keyPress: function(event) {
       if (
         this.inputType == "identityNumber" ||
@@ -112,9 +117,14 @@ export default {
         }
       }
     },
+    /**
+     * khi blur khỏi input
+     * CreatedBy : DTHUONG(20/8/2021)
+     */
     blurInput: function() {
       this.active = false;
-      
+      //check xem dữ liệu đã nhập có hợp lệ không 
+      // trả về true - hợp lệ , false - không hợp lệ
       if (this.status == true) {
         if (this.inputValue == "") {
           this.error = true;

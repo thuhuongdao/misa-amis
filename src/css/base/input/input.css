@@ -15,7 +15,7 @@
     border-color: #dadadc;
 }
 .active-input{
-    border-color: #2ca01c;
+    border-color: #2ca01c !important;
 }
 .error-input{
     border-color: red !important;

@@ -5,8 +5,8 @@
     </div>    
 </template>
 <style scoped>
-@import '../../css/base/input/input.css';
-@import '../../css/base/input/search-input.css';
+@import '../../../css/base/input/input.css';
+@import '../../../css/base/input/search-input.css';
 </style>
 <script>
 export default {

@@ -6,11 +6,11 @@
         <div class="modal-title">
           <div class="title">Thông tin nhân viên</div>
           <div class="checkbox-wrapper">
-            <base-checkbox/>
-            <label for="customer">Là khách hàng</label>
+            <base-checkbox :checked="isCustomer" @check="isCustomer = $event"/>
+            <label for="customer" >Là khách hàng</label>
           </div>
           <div class="checkbox-wrapper">
-            <base-checkbox/>
+            <base-checkbox :checked="isSupplier" @check="isSupplier = $event"/>
             <label for="supplier">Là nhà cung cấp</label>
           </div>
         </div>
@@ -20,6 +20,7 @@
         </div>
       </div>
       <div class="modal-body">
+        <button class="btn-last" @focus="$refs['save-and-add'].autoFocus()"/>
         <div class="base-info">
           <div class="w-50 left-base">
             <div class="base-info-row flex-row">
@@ -245,30 +246,30 @@
             <base-white-button
               class="btn-save"
               text="Cất"
-              @click.native="save" @keyup.enter.native="save"
+              @click.native="save(false)" @keyup.enter.native="save(false)"
             />
-            <base-green-button text="Cất và Thêm" @click.native="saveAndAdd" @keyup.enter.native="saveAndAdd" />
-            <button class="btn-last" @keyup.tab="$refs.employeeCode.autoFocus()"/>
+            <base-green-button ref="save-and-add" text="Cất và Thêm" @click.native="save(true)" @keyup.enter.native="save(true)" />
+            <button class="btn-last" @focus="$refs.employeeCode.autoFocus()"/>
 
           </div>
         </div>
       </div>
     </div>
     <base-danger-popup
-    ref="danger"
+  
     
       v-show="isShowDanger"
       :text="dangerText"
       @close="closeDanger"
     />
     <base-warning-popup
-    ref="warning"
+  
       v-show="isShowWarning"
       :text="warningText"
       @ok="isShowWarning = false"
     />
     <base-info-popup
-    ref="info"
+  
       v-show="isShowInfo"
       @yes="yesInfo"
       @no="noInfo"
@@ -277,33 +278,34 @@
   </div>
 </template>
 <style scoped>
-@import "../../css/common/datepicker.css";
+@import "../../../css/common/datepicker.css";
 
-@import "../../css/page/dialog.css";
+@import "../../../css/page/dialog.css";
 </style>
 <script>
 import Vue from "vue";
-import axios from "axios";
-import VueAxios from "vue-axios";
-
-Vue.use(VueAxios, axios);
+import EmployeeAPI from '../../../js/api/specific/EmployeeAPI'
 import VTooltip from 'v-tooltip'
 Vue.use(VTooltip)
 
 
+import msg from '../../../js/common/message';
+import dialogMode from "../../../js/common/const";
 import DatePicker from "vue2-datepicker";
 import "vue2-datepicker/index.css";
-import BaseAutoComboBox from "../base/BaseAutoComboBox.vue";
-import BaseGreenButton from "../base/BaseGreenButton.vue";
-import BaseInput from "../base/BaseInput.vue";
-import BaseWhiteButton from "../base/BaseWhiteButton.vue";
-import BaseRadio from "../base/BaseRadio.vue";
-import dialogMode from "../../js/common/const";
-import BaseDangerPopup from "../base/BaseDangerPopup.vue";
-import BaseWarningPopup from "../base/BaseWarningPopup.vue";
-import BaseInfoPopup from "../base/BaseInfoPopup.vue";
-import BaseLoading from '../base/BaseLoading.vue';
-import BaseCheckbox from '../base/BaseCheckbox.vue';
+import BaseAutoComboBox from "../../base/BaseAutoComboBox.vue";
+import BaseGreenButton from "../../base/button/BaseGreenButton.vue";
+import BaseWhiteButton from "../../base/button/BaseWhiteButton.vue";
+import BaseInput from "../../base/input/BaseInput.vue";
+
+import BaseRadio from "../../base/BaseRadio.vue";
+
+import BaseDangerPopup from "../../base/popup/BaseDangerPopup.vue";
+import BaseWarningPopup from "../../base/popup/BaseWarningPopup.vue";
+import BaseInfoPopup from "../../base/popup/BaseInfoPopup.vue";
+
+import BaseLoading from '../../base/BaseLoading.vue';
+import BaseCheckbox from '../../base/BaseCheckbox.vue';
 
 
 export default {
@@ -325,6 +327,10 @@ export default {
     return {
       //trạng thái đang loading dữ liệu
       isLoading: false,
+      //là khách hàng
+      isCustomer: false,
+      //là nhà cung cấp
+      isSupplier: false,
       //số lần thay đổi trong form thông tin
       countChange: 0,
       //trạng thái đóng mở popup info
@@ -346,7 +352,7 @@ export default {
         employeeCode: "",
         employeeName: "",
         dateOfBirth: null,
-        gender: 0,
+        gender: null,
         departmentId: null,
         departmentName: "",
         identityNumber: "",
@@ -399,13 +405,15 @@ export default {
      * CreatedBy : DTHUONG(21/8/2021)
      */
     getNewCode:async function() {
-    await  axios
-        .get("https://localhost:44389/api/v1/employees/newcode")
+    await  EmployeeAPI.newCode()
         .then((res) => {
           this.item.employeeCode = res.data;
         })
         .catch((error) => {
-          console.log(error);
+          if(error.status == 500){
+             
+              this.openWarning(error.data.userMsg);
+            }
         });
     },
     /**
@@ -413,8 +421,7 @@ export default {
      * CreatedBy : DTHUONG(21/8/2021)
      */
     getById:async function(id) {
-    await   axios
-        .get("https://localhost:44389/api/v1/employees/" + id)
+    await   EmployeeAPI.getById(id)
         .then((res) => {
           this.item = res.data;
           //format date về dạng object
@@ -430,146 +437,149 @@ export default {
           }
         })
         .catch((error) => {
-          console.log(error);
+          if(error.status == 500){
+             
+              this.openWarning(error.data.userMsg);
+            }
         });
     },
+     /**
+     * gọi api thêm nhân viên
+     * CreateBy: DTHUONG(20/8/2021)
+     */
     add: async function(season) {
       //thông báo đang loading dữ liệu
       this.isLoading= true;
       //thêm nhân viên
-      axios
-        .post("https://localhost:44389/api/v1/employees", this.item)
+      EmployeeAPI.create(this.item)
         .then((res) => {
           //thông báo đã load dữ liệu xong
           this.isLoading= false;
           
           if (res.status == 201) {
             if (season == true) {
-              this.$emit("change-mode", dialogMode.Add);
-              this.countChange = -1;
-              this.item = {
-                employeeCode: "",
-                employeeName: "",
-                dateOfBirth: null,
-                gender: 0,
-                departmentId: null,
-                departmentName: "",
-                identityNumber: "",
-                identityDate: null,
-                identityPlace: "",
-                employeePosition: "",
-                address: "",
-                bankAccountNumber: "",
-                bankName: "",
-                bankBranchName: "",
-
-                phoneNumber: "",
-                telephoneNumber: "",
-                email: "",
-              };
-
-              this.getNewCode();
-              this.$refs.employeeCode.autoFocus();
+              this.continueAdd();
             } else {
               this.close();
             }
             this.$emit("success", this.mode);
           } else if (res.status == 200) {
             if (res.data.success == false) {
-              this.warningText = res.data.userMsg + ", vui lòng kiểm tra lại";
-              this.openWarning();
+              
+              this.openWarning(res.data.userMsg + msg.ReCheck);
             }
           }
         })
         .catch((error) => {
+          //thông báo đã load dữ liệu xong
           this.isLoading= false;
             if(error.status == 500){
-              this.warningText = error.data.userMsg;
-              this.openWarning();
+             
+              this.openWarning(error.data.userMsg);
             }
-          console.log(error);
+         
           
         });
     },
+    /**
+     * gọi api sửa thông tin nhân viên theo id
+     * CreateBy: DTHUONG(20/8/2021)
+     */
     edit: function(season) {
-      console.log(this.item);
+      //thông báo đang loading dữ liệu
       this.isLoading= true;
-      axios
-        .put("https://localhost:44389/api/v1/employees", this.item)
+      //thực hiện sửa thông tin nhân viên
+      EmployeeAPI.update(this.item)
         .then((res) => {
-          console.log(res);
+          //thông báo đã load xong
           this.isLoading= false;
           if (res.status == 200) {
             if (res.data.success == true) {
               if (season == true) {
-                this.$emit("change-mode", dialogMode.Add);
-                this.countChange = -1;
-                this.item = {
-                  employeeCode: "",
-                  employeeName: "",
-                  dateOfBirth: null,
-                  gender: 0,
-                  departmentId: null,
-                  departmentName: "",
-                  identityNumber: "",
-                  identityDate: null,
-                  identityPlace: "",
-                  employeePosition: "",
-                  address: "",
-                  bankAccountNumber: "",
-                  bankName: "",
-                  bankBranchName: "",
-
-                  phoneNumber: "",
-                  telephoneNumber: "",
-                  email: "",
-                };
-                this.getNewCode();
-                this.$refs.employeeCode.autoFocus();
+                
+                this.continueAdd();
               } else {
                 this.close();
               }
               this.$emit("success", this.mode);
             }else{
-              this.warningText = res.data.userMsg + ", vui lòng kiểm tra lại";
-              this.openWarning();
+              //thông báo lỗi
+              this.openWarning(res.data.userMsg + msg.ReCheck);
             }
           }
         }).catch((error) => {
-          console.log(error);
+          //thông báo đã load xong
           this.isLoading= false;
           if(error.status == 500){
-              this.warningText = error.data.userMsg;
-              this.openWarning();
+            //thông báo lỗi
+              
+              this.openWarning(error.data.userMsg);
             }
         });
     },
-    saveAndAdd: function() {
-      if (this.validate()) {
-        if (this.mode == dialogMode.Add) this.add(true);
-        else if (this.mode == dialogMode.Edit) this.edit(true);
-        else this.add(true);
-      } else {
-        this.openDanger()
-      }
+    /**
+     * save khi lưu dữ liệu tiếp tục thêm mới
+     * CreateBy: DTHUONG(21/8/2021)
+     */
+    continueAdd:function(){
+      this.$emit("change-mode", dialogMode.Add);
+      this.countChange = -1;
+      this.item = {
+        employeeCode: "",
+        employeeName: "",
+        dateOfBirth: null,
+        gender: null,
+        departmentId: null,
+        departmentName: "",
+        identityNumber: "",
+        identityDate: null,
+        identityPlace: "",
+        employeePosition: "",
+        address: "",
+        bankAccountNumber: "",
+        bankName: "",
+        bankBranchName: "",
+        phoneNumber: "",
+        telephoneNumber: "",
+        email: "",
+      };
+
+      this.getNewCode();
+      this.$refs.employeeCode.autoFocus();
     },
-    save: function() {
+    /**
+     * lưu lại thông tin nhân viên
+     * (có thể tiếp tục thêm mới)
+     * CreatedBy : DTHUONG (19/8/2021)
+     */
+    save: function(value) {
       if (this.validate()) {
         if (this.validateDob(this.item.dateOfBirth) == false) {
-          this.warningText = "Chưa đủ 15 tuổi, chưa đủ tuổi lao động";
-          this.openWarning();
+          
+          this.openWarning(msg.errorDob);
         } else {
-          if (this.mode == dialogMode.Add) this.add(false);
-          else if (this.mode == dialogMode.Edit) this.edit(false);
-          else this.add(false);
+          if (this.mode == dialogMode.Add) this.add(value);
+          else if (this.mode == dialogMode.Edit) this.edit(value);
+          else this.add(value);
         }
       } else {
-        this.openDanger()
+        this.openDanger();
       }
+      
+      
     },
+    /**
+     * đóng form chi tiết
+     * CreatedBy : DTHUONG (19/8/2021)
+     * 
+     */
     close: function() {
       this.$emit("close-dialog");
     },
+    /**
+     * click vào nút x đóng form
+     * CreatedBy : DTHUONG (19/8/2021)
+     */
     closeX: function() {
       if (this.mode == dialogMode.Add || this.mode == dialogMode.Edit) {
         if (this.countChange > 1) {
@@ -585,14 +595,17 @@ export default {
         }
       }
     },
-
+    /**
+     * validate thông tin nhập vào có hợp lệ không
+     * CreatedBy : DTHUONG (21/8/2021)
+     * 
+     */
     validate: function() {
-      // console.log(this.$refs);
+   
       let valid = true;
 
       for (let key in Object(this.$refs)) {
-        console.log(this.$refs[key]);
-        console.log(this.$refs[key].field);
+        
         if (this.$refs[key].blurInput && this.$refs[key].blurInput() == false) {
           if (valid == true) {
             valid = false;
@@ -602,9 +615,15 @@ export default {
         }
       }
 
-      //if (valid == false) this.$refs[first].autoFocus();
+      
       return valid;
     },
+    /**
+     * validate trường ngày sinh
+     * nhân viên phải đủ 15 tuổi
+     * CreatedBy : DTHUONG (21/8/2021)
+     * 
+     */
     validateDob(date) {
       if (date == null) return true;
       var currentDate = new Date();
@@ -619,36 +638,66 @@ export default {
       if (date.getTime() > dateObj.getTime()) return false;
       return true;
     },
+    /**
+     * lưu dữ liệu và đóng form chi tiết
+     * CreatedBy : DTHUONG (21/8/2021)
+     */
     yesInfo: function() {
-      console.log("aaaaaaaaaaaaaaa");
+      
       this.isShowInfo = false;
       this.save();
     },
+    /**
+     * đóng form chi tiết mà không lưu dữ liệu
+     * CreatedBy : DTHUONG (21/8/2021)
+     */
     noInfo: function() {
       this.isShowInfo = false;
       this.close();
     },
+    /**
+     * hoãn không đóng form chi tiết nữa
+     * CreatedBy : DTHUONG (21/8/2021)
+     */
     cancelInfo: function() {
       this.isShowInfo = false;
     },
-
+    /**
+     * đóng popup cảnh báo thông tin không hợp lệ
+     * tự động focus vào trường không hợp lệ đầu tiên
+     * CreatedBy : DTHUONG (21/8/2021)
+     */
     closeDanger: function() {
       this.isShowDanger = false;
       this.$refs[this.firstError].autoFocus();
     },
+    /**
+     * mở popup danger
+     * CreatedBy : DTHUONG (22/8/2021)
+     */
     openDanger: function(){
-      this.$refs.danger.autoFocus();
+      
       this.isShowDanger = true;
+     
       
     },
-    openWarning: function(){
+    /**
+     * mở popup warning
+     * CreatedBy : DTHUONG (22/8/2021)
+     */
+    openWarning: function(value){
+      this.warningText = value;
       this.isShowWarning = true;
-      this.$refs.warning.autoFocus();
+     
 
     },
+    /**
+     * mở popup info
+     * CreatedBy : DTHUONG (22/8/2021)
+     */
     openInfo: function(){
       this.isShowInfo = true;
-      this.$refs.info.autoFocus();
+     
     }
   },
 };

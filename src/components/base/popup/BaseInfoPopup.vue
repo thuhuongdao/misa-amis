@@ -19,18 +19,14 @@
   </div>
 </template>
 <style scoped>
-@import "../../css/base/popup/popup.css";
-@import "../../css/base/popup/info-popup.css";
+@import "../../../css/base/popup/popup.css";
+@import "../../../css/base/popup/info-popup.css";
 </style>
 <script>
-import BaseGreenButton from "./BaseGreenButton.vue";
-import BaseWhiteButton from "./BaseWhiteButton.vue";
+import BaseGreenButton from "../button/BaseGreenButton.vue";
+import BaseWhiteButton from "../button/BaseWhiteButton.vue";
 export default {
   components: { BaseGreenButton, BaseWhiteButton },
-  methods:{
-      autoFocus: function(){
-    this.$refs['btn-info'].autoFocus();
-    }
-  }
+  
 };
 </script>

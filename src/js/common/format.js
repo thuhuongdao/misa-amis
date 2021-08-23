@@ -1,7 +1,7 @@
 var format = {
     /**
      * format date theo định dạng dd/mm/yyyy
-     * @param {*} value 
+     * @param {Date} value 
      * @returns 
      */
     formatDate(value) {

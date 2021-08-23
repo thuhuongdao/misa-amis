@@ -14,7 +14,7 @@
 <script>
 import TheMenu from './components/layout/TheMenu.vue'
 import TheHeader from './components/layout/TheHeader.vue'
-import EmployeePage from './components/page/EmployeePage.vue'
+import EmployeePage from './components/view/employee/EmployeePage.vue'
 
 export default {
   name: 'App',

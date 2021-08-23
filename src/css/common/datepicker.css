@@ -4,6 +4,10 @@
 .mx-input{
     height: 32px;
     border-radius: 2px;
+    border-color: #babec5;
+    color:  #111;
+    font-size: 13px;
+    font-family: notosans-regular;
 }
 .mx-input::placeholder{
     font-size: 12px;

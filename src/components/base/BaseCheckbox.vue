@@ -23,6 +23,10 @@ export default {
     },
 
     methods:{
+        /**
+         * click  vào checkbox
+         * CreatedBy : DTHUONG(22/8/2021)
+         */
         check: function(){
             this.isChecked = !this.isChecked;
            

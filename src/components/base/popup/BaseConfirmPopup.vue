@@ -13,12 +13,12 @@
     </div>
 </template>
 <style scoped>
-@import '../../css/base/popup/popup.css';
-@import '../../css/base/popup/confirm-popup.css';
+@import '../../../css/base/popup/popup.css';
+@import '../../../css/base/popup/confirm-popup.css';
 </style>
 <script>
-import BaseGreenButton from './BaseGreenButton.vue'
-import BaseWhiteButton from './BaseWhiteButton.vue'
+import BaseGreenButton from '../button/BaseGreenButton.vue'
+import BaseWhiteButton from '../button/BaseWhiteButton.vue'
 export default {
   components: { BaseGreenButton, BaseWhiteButton },
   props:{
